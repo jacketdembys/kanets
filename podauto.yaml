@@ -17,7 +17,9 @@ spec:
     image: gitlab-registry.nrp-nautilus.io/udembys/iksolver
     command: ["/bin/bash", "-c"]
     args: ["cd /home;
-            git clone https://github.com/jacketdembys/iksolver.git;
+            git clone https://github.com/jacketdembys/kanets.git;
+            pip install ipykernel;
+            pip install imageio;
             cd iksolver/;
             wandb login --cloud d7f81da19c5965b1c5eff37a677caab3ffb5379c;
             python create_experiments.py --layers 10 --neurons 1024 --scale 10 --load cloud;
