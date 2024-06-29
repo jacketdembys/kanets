@@ -19,7 +19,12 @@ spec:
     args: ["cd /home;
             git clone https://github.com/jacketdembys/kanets.git;
             pip install ipykernel;
+            pip install ipywidgets;
             pip install imageio; 
+            sudo apt-get update;
+            sudo apt-get install -y libgl1-mesa-glx libgtk2.0-0;
+            sudo rm -rf /var/lib/apt/lists/;
+            pip install opencv-python;
             sleep infinity"]
     resources:
       limits:

@@ -86,7 +86,7 @@ def train_model(network_size, learning_rate, iters, B, train_data, test_data):
             with torch.no_grad():
                 loss_test, pred_test = compute_loss(net, B, *test_data)
 
-                print(f'step={i+1:4d}  loss_train={loss_train.item():.3f}')
+                print(f'Epoch {i+1:4d}: loss_train={loss_train.item():.3f}')
                 pred_img = pred_test.data.cpu().numpy()
                 cv2_putText(pred_img, (5,40), f'#{i+1} loss:{loss_train.item():.3f}', scale=1.5, fgcolor=(0,0,1.), thickness=2,)
             #
@@ -128,9 +128,12 @@ for scale in [1., 10., 100.]:
 
 # This should take about 2-3 minutes
 outputs = {}
+methods = ['none', 'basic', 'gauss_1', 'gauss_10', 'gauss_100']
 for k in tqdm(B_dict):
-    print("Processing {} ...".format(B_dict[k]))
+    #print(k)
+    #print("\nProcessing {} ...".format(methods[k]))
     outputs[k] = train_model(network_size, learning_rate, iters, B_dict[k], train_data, test_data)
+    #print(outputs[k]['pred_img'].shape)
     generate_animation(f'assets/output.cache/{k}.gif', outputs[k]['pred_img'], rsz_height=256, duration=0.2)
     # generate_mp4(f'assets/{k}.mp4', outputs[k]['pred_img'], rsz_height=256, duration=1)
 
@@ -154,6 +157,8 @@ plt.title('Test error', fontsize=18)
 plt.ylabel('PSNR', fontsize=18)
 plt.xlabel('Training iter', fontsize=18)
 plt.legend()
+
+plt.show()
 
 # plt.show()
 plt_save('assets/output.cache/training_curve.png')
