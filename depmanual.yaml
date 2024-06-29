@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pytorch-ddik-deployment
+  labels:
+    app: pytorch-ddik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pytorch-ddik
+  template:
+    metadata:
+      labels:
+        app: pytorch-ddik
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                - NVIDIA-GeForce-RTX-3090
+      containers:
+      - name: gpu-container
+        image: gitlab-registry.nrp-nautilus.io/udembys/iksolver
+        command: ["sleep", "infinity"]
+        resources:
+          limits:
+            memory: 16Gi
+            cpu: 16
+            nvidia.com/gpu: 1
+          requests:
+            memory: 16Gi
+            cpu: 16
+            nvidia.com/gpu: 1
